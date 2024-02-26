@@ -1,0 +1,40 @@
+syntax = "proto3";
+package lsmrpc;
+
+// Interface for setting a value
+
+message KeyValueRequest {
+  bytes key = 1;
+  bytes value = 2;
+}
+
+message RangeRequest {
+  optional bytes key_start = 1;
+  optional bytes key_end = 2;
+}
+
+message RangeResponse {
+  bytes key = 1;
+  bytes value = 2;
+}
+
+message IntResponse {
+  int32 result = 2;
+}
+
+message KeyRequest {
+  bytes key = 1;
+}
+
+message GetValueResponse {
+  bytes value = 1;
+}
+
+// Interface for deleting a value
+
+service LSMService {
+  rpc SetValue(KeyValueRequest) returns (IntResponse);
+  rpc GetValue(KeyRequest) returns (GetValueResponse);
+  rpc Delete(KeyRequest) returns (IntResponse);
+  rpc Range(RangeRequest) returns (stream RangeResponse);
+}
